@@ -9,7 +9,20 @@
 			"name": "Authentication",
 			"item": [
 				{
-					"name": "Register User",
+					"name": "Register User - Ghanshyam",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    pm.collectionVariables.set(\"token\", \"Bearer \" + pm.response.json().token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -20,17 +33,17 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"full_name\": \"Test User\"\n}"
+							"raw": "{\n  \"username\": \"ghanshyam\",\n  \"email\": \"ghanshyam.thacker@au.edu.in\",\n  \"password\": \"Ghanshyam@123\",\n  \"full_name\": \"Ghanshyam Thacker\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/auth/register",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/auth/register",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "auth", "register"]
 						}
 					}
 				},
 				{
-					"name": "Login User",
+					"name": "Register User - Madhav Sharma",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -41,11 +54,45 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"password123\"\n}"
+							"raw": "{\n  \"username\": \"madhav\",\n  \"email\": \"madhav.sharma@gmail.com\",\n  \"password\": \"Madhav@123\",\n  \"full_name\": \"Madhav Sharma\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/auth/login",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/auth/register",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login User - Ghanshyam",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    pm.collectionVariables.set(\"token\", \"Bearer \" + pm.response.json().token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"ghanshyam\",\n  \"password\": \"Ghanshyam@123\"\n}"
+						},
+						"url": {
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/auth/login",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "auth", "login"]
 						}
 					}
@@ -61,8 +108,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/auth/profile",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/auth/profile",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "auth", "profile"]
 						}
 					}
@@ -73,17 +120,17 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "Search Users",
+					"name": "Search Users - Find Madhav",
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{base_url}}/api/users/search?name=test&page=1&limit=20",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/users/search?name=mad&page=1&limit=20",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "users", "search"],
 							"query": [
 								{
 									"key": "name",
-									"value": "test"
+									"value": "mad"
 								},
 								{
 									"key": "page",
@@ -102,8 +149,8 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{base_url}}/api/users/profile/1",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/users/profile/1",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "users", "profile", "1"]
 						}
 					}
@@ -127,8 +174,8 @@
 							"raw": "{\n  \"full_name\": \"Updated Name\",\n  \"email\": \"newemail@example.com\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/users/profile",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/users/profile",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "users", "profile"]
 						}
 					}
@@ -152,8 +199,8 @@
 							"raw": "{\n  \"user_id\": 2\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/users/follow",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/users/follow",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "users", "follow"]
 						}
 					}
@@ -169,8 +216,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/users/follow/2",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/users/follow/2",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "users", "follow", "2"]
 						}
 					}
@@ -180,8 +227,8 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{base_url}}/api/users/following/1?page=1&limit=20",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/users/following/1?page=1&limit=20",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "users", "following", "1"],
 							"query": [
 								{
@@ -201,8 +248,8 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{base_url}}/api/users/followers/1?page=1&limit=20",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/users/followers/1?page=1&limit=20",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "users", "followers", "1"],
 							"query": [
 								{
@@ -223,7 +270,7 @@
 			"name": "Posts",
 			"item": [
 				{
-					"name": "Create Post",
+					"name": "Create Post - Backend Completion",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -238,17 +285,17 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"content\": \"This is my new post!\",\n  \"media_url\": \"https://example.com/image.jpg\",\n  \"comments_enabled\": true\n}"
+							"raw": "{\n  \"content\": \"Just completed building the backend for a full social media app using Node.js, Express, PostgreSQL & JWT! 🚀\",\n  \"media_url\": \"https://i.imgur.com/backend.jpg\",\n  \"comments_enabled\": true\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/posts",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/posts",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "posts"]
 						}
 					}
 				},
 				{
-					"name": "Create Scheduled Post",
+					"name": "Create Scheduled Post - Going Live",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -263,11 +310,11 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"content\": \"This post will be published in the future!\",\n  \"media_url\": \"https://example.com/image.jpg\",\n  \"comments_enabled\": true,\n  \"scheduled_at\": \"2025-02-01T12:00:00Z\"\n}"
+							"raw": "{\n  \"content\": \"Scheduled update: The backend is going live today! 🚀 Deployed on Render with PostgreSQL database.\",\n  \"comments_enabled\": true,\n  \"scheduled_at\": \"2025-11-22T07:00:00Z\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/posts",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/posts",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "posts"]
 						}
 					}
@@ -283,8 +330,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/posts/my?page=1&limit=20",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/posts/my?page=1&limit=20",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "posts", "my"],
 							"query": [
 								{
@@ -310,8 +357,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/posts/scheduled",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/posts/scheduled",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "posts", "scheduled"]
 						}
 					}
@@ -328,8 +375,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/posts/1",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/posts/1",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "posts", "1"]
 						}
 					}
@@ -339,8 +386,8 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{base_url}}/api/posts/user/1?page=1&limit=20",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/posts/user/1?page=1&limit=20",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "posts", "user", "1"],
 							"query": [
 								{
@@ -366,8 +413,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/posts/1",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/posts/1",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "posts", "1"]
 						}
 					}
@@ -378,7 +425,7 @@
 			"name": "Comments",
 			"item": [
 				{
-					"name": "Create Comment",
+					"name": "Create Comment - Excitement",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -393,11 +440,11 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"post_id\": 1,\n  \"content\": \"Great post!\"\n}"
+							"raw": "{\n  \"post_id\": 1,\n  \"content\": \"Excited to deploy this soon! 🔥 This has all features - auth, posts, comments, likes, follows, and even scheduled posts!\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/comments",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/comments",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "comments"]
 						}
 					}
@@ -407,8 +454,8 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{base_url}}/api/comments/post/1?page=1&limit=20",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/comments/post/1?page=1&limit=20",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "comments", "post", "1"],
 							"query": [
 								{
@@ -442,8 +489,8 @@
 							"raw": "{\n  \"content\": \"Updated comment text\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/comments/1",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/comments/1",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "comments", "1"]
 						}
 					}
@@ -459,8 +506,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/comments/1",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/comments/1",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "comments", "1"]
 						}
 					}
@@ -489,8 +536,8 @@
 							"raw": "{\n  \"post_id\": 1\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/api/likes",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/likes",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "likes"]
 						}
 					}
@@ -506,8 +553,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/likes/1",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/likes/1",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "likes", "1"]
 						}
 					}
@@ -517,8 +564,8 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{base_url}}/api/likes/post/1?page=1&limit=20",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/likes/post/1?page=1&limit=20",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "likes", "post", "1"],
 							"query": [
 								{
@@ -538,8 +585,8 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{base_url}}/api/likes/user/1?page=1&limit=20",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/likes/user/1?page=1&limit=20",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "likes", "user", "1"],
 							"query": [
 								{
@@ -570,8 +617,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/feed?page=1&limit=20",
-							"host": ["{{base_url}}"],
+							"raw": "https://social-media-backend-6lx9.onrender.com/api/feed?page=1&limit=20",
+							"host": ["https://social-media-backend-6lx9.onrender.com"],
 							"path": ["api", "feed"],
 							"query": [
 								{

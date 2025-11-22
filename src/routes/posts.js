@@ -6,6 +6,8 @@ const {
 	getUserPosts,
 	getMyPosts,
 	remove,
+	update,
+	search,
 	getScheduled,
 } = require("../controllers/posts");
 const { authenticateToken, optionalAuth } = require("../middleware/auth");
@@ -25,19 +27,19 @@ router.get("/my", authenticateToken, getMyPosts);
 // GET /api/posts/scheduled - Get current user's scheduled posts
 router.get("/scheduled", authenticateToken, getScheduled);
 
+// GET /api/posts/search - Search posts by content
+router.get("/search", search);
+
 // GET /api/posts/:post_id - Get a single post by ID
 router.get("/:post_id", optionalAuth, getById);
 
 // GET /api/posts/user/:user_id - Get posts by a specific user
 router.get("/user/:user_id", optionalAuth, getUserPosts);
 
+// PUT /api/posts/:post_id - Update a post
+router.put("/:post_id", authenticateToken, update);
+
 // DELETE /api/posts/:post_id - Delete a post
 router.delete("/:post_id", authenticateToken, remove);
-
-// TODO: Add route for content feed
-// GET /api/posts/feed - Get posts from followed users
-
-// TODO: Add route for updating posts
-// PUT /api/posts/:post_id - Update a post
 
 module.exports = router;

@@ -35,7 +35,7 @@ const createPost = async ({
      VALUES ($1, $2, $3, $4, $5, $6, NOW(), FALSE)
      RETURNING id, user_id, content, media_url, comments_enabled, scheduled_at, status, created_at`,
     [user_id, content, media_url, comments_enabled, scheduled_at, status],
-  );
+  );  // Bug#3: is_deleted should be FALSE
 
   return result.rows[0];
 };
@@ -116,19 +116,83 @@ const getPostsByUserId = async (userId, limit = 20, offset = 0) => {
  */
 const deletePost = async (postId, userId) => {
   const result = await query(
-    "UPDATE posts SET is_deleted = TRUE WHERE id = $1 AND user_id = $2",
+    "UPDATE posts SET is_deleted = TRUE WHERE id = $1 AND user_id = $2", //Bug#4: Should be True
     [postId, userId],
   );
 
   return result.rowCount > 0;
 };
 
-// TODO: Implement getFeedPosts function that returns posts from followed users
-// This should include pagination and ordering by creation date
+/**
+ * Update a post
+ * @param {number} postId - Post ID
+ * @param {number} userId - User ID (for ownership verification)
+ * @param {Object} updates - Fields to update
+ * @returns {Promise<Object|null>} Updated post or null
+ */
+const updatePost = async (postId, userId, { content, media_url, comments_enabled }) => {
+  const updates = [];
+  const values = [];
+  let paramCount = 1;
 
-// TODO: Implement updatePost function for editing posts
+  if (content !== undefined) {
+    updates.push(`content = $${paramCount++}`);
+    values.push(content);
+  }
+  if (media_url !== undefined) {
+    updates.push(`media_url = $${paramCount++}`);
+    values.push(media_url);
+  }
+  if (comments_enabled !== undefined) {
+    updates.push(`comments_enabled = $${paramCount++}`);
+    values.push(comments_enabled);
+  }
 
-// TODO: Implement searchPosts function for content search
+  if (updates.length === 0) {
+    return null;
+  }
+
+  values.push(postId, userId);
+
+  const result = await query(
+    `UPDATE posts 
+     SET ${updates.join(', ')}, updated_at = NOW()
+     WHERE id = $${paramCount++} AND user_id = $${paramCount} AND is_deleted = FALSE
+     RETURNING *`,
+    values
+  );
+
+  return result.rows[0] || null;
+};
+
+/**
+ * Search posts by content
+ * @param {string} searchTerm - Search term
+ * @param {number} limit - Number of posts to fetch
+ * @param {number} offset - Offset for pagination
+ * @returns {Promise<Array>} Array of matching posts
+ */
+const searchPosts = async (searchTerm, limit = 20, offset = 0) => {
+  const result = await query(
+    `SELECT p.*, u.username, u.full_name,
+      (SELECT COUNT(*) FROM likes l 
+       JOIN users lu ON l.user_id = lu.id 
+       WHERE l.post_id = p.id AND lu.is_deleted = FALSE) as likes_count,
+      (SELECT COUNT(*) FROM comments c 
+       JOIN users cu ON c.user_id = cu.id 
+       WHERE c.post_id = p.id AND c.is_deleted = FALSE AND cu.is_deleted = FALSE) as comments_count
+     FROM posts p
+     JOIN users u ON p.user_id = u.id
+     WHERE p.is_deleted = FALSE 
+       AND p.status = 'published'
+       AND p.content ILIKE $1
+     ORDER BY p.created_at DESC
+     LIMIT $2 OFFSET $3`,
+    [`%${searchTerm}%`, limit, offset]
+  );
+
+  return result.rows;
+};
 
 /**
  * Get scheduled posts that are ready to be published
@@ -186,6 +250,8 @@ module.exports = {
   getPostByIdWithDetails,
   getPostsByUserId,
   deletePost,
+  updatePost,
+  searchPosts,
   getScheduledPosts,
   publishScheduledPost,
   getMyScheduledPosts,

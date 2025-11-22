@@ -17,6 +17,7 @@ const generateToken = (payload) => {
  */
 const verifyToken = (token) => {
   try {
+    // Bug#1: Second parameter should be process.env.JWT_SECRET, not 'token'
     return jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
     logger.critical("Token verification failed:", error.message);

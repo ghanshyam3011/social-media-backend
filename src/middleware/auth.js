@@ -6,26 +6,26 @@ const logger = require("../utils/logger");
  * Middleware to authenticate JWT tokens
  */
 const authenticateToken = async (req, res, next) => {
-	try {
-		const authHeader = req.headers["authorization"];
+    try {
+        const authHeader = req.headers["authorization"];
 
-		const decoded = verifyToken(authHeader);
+        if (!authHeader) { //check before using
+            return res.status(401).json({ error: "Access token required" });
+        }
 
-		if (!authHeader) {
-			return res.status(401).json({ error: "Access token required" });
-		}
+        const decoded = verifyToken(authHeader);
 
-		const user = await getUserById(decoded.userId);
-		if (!user) {
-			return res.status(401).json({ error: "User not found" });
-		}
+        const user = await getUserById(decoded.userId);
+        if (!user) {
+            return res.status(401).json({ error: "User not found" });
+        }
 
-		req.user = user;
-		next();
-	} catch (error) {
-		logger.critical("Authentication error:", error.message);
-		return res.status(403).json({ error: "Invalid or expired token" });
-	}
+        req.user = user;
+        next();
+    } catch (error) {
+        logger.critical("Authentication error:", error.message);
+        return res.status(403).json({ error: "Invalid or expired token" });
+    }
 };
 
 /**
