@@ -4,8 +4,6 @@ const {
   getPostByIdWithDetails,
   getPostsByUserId,
   deletePost,
-  updatePost,
-  searchPosts,
   getMyScheduledPosts,
 } = require("../models/post.js");
 const { getUserById } = require("../models/user.js");
@@ -140,67 +138,9 @@ const remove = async (req, res) => {
   }
 };
 
-/**
- * Update a post
- */
-const update = async (req, res) => {
-  try {
-    const { post_id } = req.params;
-    const userId = req.user.id;
-    const { content, media_url, comments_enabled } = req.body;
 
-    const post = await updatePost(parseInt(post_id), userId, {
-      content,
-      media_url,
-      comments_enabled,
-    });
 
-    if (!post) {
-      return res.status(404).json({ error: "Post not found or unauthorized" });
-    }
 
-    logger.verbose(`User ${userId} updated post ${post_id}`);
-
-    res.json({
-      message: "Post updated successfully",
-      post,
-    });
-  } catch (error) {
-    logger.critical("Update post error:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-/**
- * Search posts by content
- */
-const search = async (req, res) => {
-  try {
-    const { q } = req.query;
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
-    const offset = (page - 1) * limit;
-
-    if (!q || q.trim().length === 0) {
-      return res.status(400).json({ error: "Search query is required" });
-    }
-
-    const posts = await searchPosts(q.trim(), limit, offset);
-
-    res.json({
-      posts,
-      pagination: {
-        page,
-        limit,
-        query: q,
-        hasMore: posts.length === limit,
-      },
-    });
-  } catch (error) {
-    logger.critical("Search posts error:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
 
 /**
  * Get current user's scheduled posts
@@ -227,7 +167,5 @@ module.exports = {
   getUserPosts,
   getMyPosts,
   remove,
-  update,
-  search,
   getScheduled,
 };
