@@ -9,9 +9,7 @@ const {
 const { getUserById } = require("../models/user.js");
 const logger = require("../utils/logger");
 
-/**
- * Create a new post
- */
+// creat new post
 const create = async (req, res) => {
   try {
     const { content, media_url, comments_enabled, scheduled_at } = req.validatedData;
@@ -37,15 +35,20 @@ const create = async (req, res) => {
   }
 };
 
-/**
- * Get a single post by ID
- */
+// get a single post by ID
 const getById = async (req, res) => {
   try {
     const { post_id } = req.params;
+    const postId = parseInt(post_id);
+    
+    // Validate post_id is a valid positive number
+    if (isNaN(postId) || postId < 1) {
+      return res.status(400).json({ error: "Invalid post ID" });
+    }
+    
     const userId = req.user?.id || null;
 
-    const post = await getPostByIdWithDetails(parseInt(post_id), userId);
+    const post = await getPostByIdWithDetails(postId, userId);
 
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
@@ -58,9 +61,7 @@ const getById = async (req, res) => {
   }
 };
 
-/**
- * Get posts by a specific user
- */
+// get posts by a specific user
 const getUserPosts = async (req, res) => {
   try {
     const { user_id } = req.params;
@@ -89,12 +90,10 @@ const getUserPosts = async (req, res) => {
   }
 };
 
-/**
- * Get current user's posts
- */
+//Get current user's posts
 const getMyPosts = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.id; // Bug#6: Get from req.user, not req.params
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20;
     const offset = (page - 1) * limit;
@@ -115,9 +114,7 @@ const getMyPosts = async (req, res) => {
   }
 };
 
-/**
- * Delete a post
- */
+//delete post
 const remove = async (req, res) => {
   try {
     const { post_id } = req.params;
@@ -138,13 +135,7 @@ const remove = async (req, res) => {
   }
 };
 
-
-
-
-
-/**
- * Get current user's scheduled posts
- */
+// get user's scheduled posts
 const getScheduled = async (req, res) => {
   try {
     const userId = req.user.id;
