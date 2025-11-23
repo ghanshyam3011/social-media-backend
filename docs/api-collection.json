@@ -347,23 +347,6 @@
 					}
 				},
 				{
-					"name": "Get My Scheduled Posts",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}"
-							}
-						],
-						"url": {
-							"raw": "https://social-media-backend-6lx9.onrender.com/api/posts/scheduled",
-							"host": ["https://social-media-backend-6lx9.onrender.com"],
-							"path": ["api", "posts", "scheduled"]
-						}
-					}
-				},
-				{
 					"name": "Get Post by ID",
 					"request": {
 						"method": "GET",

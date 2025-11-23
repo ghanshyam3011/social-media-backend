@@ -4,7 +4,6 @@ const {
   getPostByIdWithDetails,
   getPostsByUserId,
   deletePost,
-  getMyScheduledPosts,
 } = require("../models/post.js");
 const { getUserById } = require("../models/user.js");
 const logger = require("../utils/logger");
@@ -135,22 +134,7 @@ const remove = async (req, res) => {
   }
 };
 
-// get user's scheduled posts
-const getScheduled = async (req, res) => {
-  try {
-    const userId = req.user.id;
 
-    const posts = await getMyScheduledPosts(userId);
-
-    res.json({
-      posts,
-      count: posts.length,
-    });
-  } catch (error) {
-    logger.critical("Get scheduled posts error:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
 
 module.exports = {
   create,
@@ -158,5 +142,4 @@ module.exports = {
   getUserPosts,
   getMyPosts,
   remove,
-  getScheduled,
 };

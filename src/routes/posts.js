@@ -6,7 +6,6 @@ const {
 	getUserPosts,
 	getMyPosts,
 	remove,
-	getScheduled,
 } = require("../controllers/posts");
 const { authenticateToken, optionalAuth } = require("../middleware/auth");
 
@@ -23,9 +22,6 @@ router.post("/", authenticateToken, validateRequest(createPostSchema), create);
 
 // GET /api/posts/my - Get current user's posts (BEFORE /:post_id)
 router.get("/my", authenticateToken, getMyPosts);
-
-// GET /api/posts/scheduled - Get user's scheduled posts (BEFORE /:post_id)
-router.get("/scheduled", authenticateToken, getScheduled);
 
 // GET /api/posts/user/:user_id - Get posts by specific user (BEFORE /:post_id)
 router.get("/user/:user_id", optionalAuth, getUserPosts);
