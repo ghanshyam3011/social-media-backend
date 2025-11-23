@@ -12,7 +12,10 @@ const { authenticateToken, optionalAuth } = require("../middleware/auth");
 
 const router = express.Router();
 
-
+/**
+ * Posts routes
+ * IMPORTANT: Specific routes (like /scheduled, /my) must come BEFORE /:post_id
+ */
 
 //  create a new post
 router.post("/", authenticateToken, validateRequest(createPostSchema), create);
