@@ -14,28 +14,26 @@ const router = express.Router();
 
 /**
  * Posts routes
- * IMPORTANT: Specific routes (like /scheduled, /my) must come BEFORE /:post_id
+ * IMPORTANT: Specific routes (like /scheduled, /my) MUST come BEFORE /:post_id
+ * Otherwise Express will treat "scheduled" as a post ID parameter
  */
 
-//  create a new post
+// POST /api/posts - Create a new post
 router.post("/", authenticateToken, validateRequest(createPostSchema), create);
 
-// get user's posts
+// GET /api/posts/my - Get current user's posts (BEFORE /:post_id)
 router.get("/my", authenticateToken, getMyPosts);
 
-
-//  BONUS :)
-// get user's scheduled posts
+// GET /api/posts/scheduled - Get user's scheduled posts (BEFORE /:post_id)
 router.get("/scheduled", authenticateToken, getScheduled);
 
-// get posts by a specific user
+// GET /api/posts/user/:user_id - Get posts by specific user (BEFORE /:post_id)
 router.get("/user/:user_id", optionalAuth, getUserPosts);
 
-// get a single post by ID
+// GET /api/posts/:post_id - Get single post by ID (MUST BE LAST)
 router.get("/:post_id", optionalAuth, getById);
 
-
-// delete a post
+// DELETE /api/posts/:post_id - Delete a post
 router.delete("/:post_id", authenticateToken, remove);
 
 module.exports = router;
