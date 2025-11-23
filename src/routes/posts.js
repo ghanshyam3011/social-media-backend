@@ -12,30 +12,27 @@ const { authenticateToken, optionalAuth } = require("../middleware/auth");
 
 const router = express.Router();
 
-/**
- * Posts routes
- */
 
-// POST /api/posts - Create a new post
+
+//  create a new post
 router.post("/", authenticateToken, validateRequest(createPostSchema), create);
 
-// GET /api/posts/my - Get current user's posts
+// get user's posts
 router.get("/my", authenticateToken, getMyPosts);
 
-// GET /api/posts/scheduled - Get current user's scheduled posts
+
+//  BONUS :)
+// get user's scheduled posts
 router.get("/scheduled", authenticateToken, getScheduled);
 
-
-
-// GET /api/posts/:post_id - Get a single post by ID
-router.get("/:post_id", optionalAuth, getById);
-
-// GET /api/posts/user/:user_id - Get posts by a specific user
+// get posts by a specific user
 router.get("/user/:user_id", optionalAuth, getUserPosts);
 
+// get a single post by ID
+router.get("/:post_id", optionalAuth, getById);
 
 
-// DELETE /api/posts/:post_id - Delete a post
+// delete a post
 router.delete("/:post_id", authenticateToken, remove);
 
 module.exports = router;
